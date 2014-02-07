@@ -105,7 +105,7 @@ const char * GeoIP_get_error_message(int i) {
     return "Server returned something unexpected";
   default:
     return "no error";
-  }
+  }  
 }
 int GeoIP_fprintf(int (*f)(FILE *, char *),FILE *fp, const char *str, ...) {
   va_list ap;
@@ -287,20 +287,21 @@ short int GeoIP_update_database (char * license_key, int verbose, void (*f)( cha
 	if (verbose == 1){
 		GeoIP_printf(f,"Connecting to MaxMind GeoIP Update server\n");
 		GeoIP_printf(f, "via Host or Proxy Server: %s:%d\n", hostlist->h_name, GeoIPHTTPPort);
-	}
+	}	
 
 	/* Download gzip file */
 	if (connect(sock, (struct sockaddr *)&sa, sizeof(struct sockaddr))< 0)
 		return GEOIP_CONNECTION_ERR;
 
-	request_uri = malloc(sizeof(char) * (strlen(license_key) + strlen(GeoIPHTTPRequest)+36));
+	request_uri = malloc(sizeof(char) * (strlen(license_key) + strlen(GeoIPHTTPRequest)
+                              + strlen(GeoIPProxyHTTP) + strlen(GeoIPProxiedHost) + 36 + 1));
 	if (request_uri == NULL)
 		return GEOIP_OUT_OF_MEMORY_ERR;
 	sprintf(request_uri,GeoIPHTTPRequest,GeoIPProxyHTTP,GeoIPProxiedHost,license_key, hex_digest);
 	send(sock, request_uri, strlen(request_uri),0);
 	free(request_uri);
 
-	buf = malloc(sizeof(char) * block_size);
+	buf = malloc(sizeof(char) * block_size + 1);
 	if (buf == NULL)
 		return GEOIP_OUT_OF_MEMORY_ERR;
 
@@ -317,12 +318,19 @@ short int GeoIP_update_database (char * license_key, int verbose, void (*f)( cha
 			return GEOIP_SOCKET_READ_ERR;
 		}
 		offset += amt;
-		buf = realloc(buf, offset+block_size);
+		buf = realloc(buf, offset+block_size + 1);
 		if (buf == NULL)
 			return GEOIP_OUT_OF_MEMORY_ERR;
 	}
 
-	compr = strstr(buf, "\r\n\r\n") + 4;
+        buf[offset]=0;
+	compr = strstr(buf, "\r\n\r\n");
+        if ( compr == NULL ) {
+   		free(buf);
+		return GEOIP_INVALID_SERVER_RESPONSE;
+        }
+        /* skip searchstr  "\r\n\r\n" */
+        compr += 4;
 	comprLen = offset + buf - compr;
 
 	if (strstr(compr, "License Key Invalid") != NULL) {
@@ -521,15 +529,17 @@ short int GeoIP_update_database_general (char * user_id,char * license_key,char 
 	sa.sin_port = htons(GeoIPHTTPPort);
 	memcpy(&sa.sin_addr, hostlist->h_addr_list[0], hostlist->h_length);
 	sa.sin_family = AF_INET;
-
+	
 	if (verbose == 1) {
 		GeoIP_printf(f,"Connecting to MaxMind GeoIP server\n");
 		GeoIP_printf(f, "via Host or Proxy Server: %s:%d\n", hostlist->h_name, GeoIPHTTPPort);
 	}
-
+	
 	if (connect(sock, (struct sockaddr *)&sa, sizeof(struct sockaddr))< 0)
 		return GEOIP_CONNECTION_ERR;
-	request_uri = malloc(sizeof(char) * (strlen(license_key) + strlen(GeoIPHTTPRequestMD5)+1036));
+	request_uri = malloc(sizeof(char) * (strlen(GeoIPHTTPRequestFilename) 
+                                             + strlen(GeoIPProxyHTTP) + strlen(GeoIPProxiedHost)
+                                             + strlen(data_base_type) + strlen(GeoIPUpdateHost) + 1));
 	if (request_uri == NULL)
 		return GEOIP_OUT_OF_MEMORY_ERR;
 
@@ -546,7 +556,7 @@ short int GeoIP_update_database_general (char * user_id,char * license_key,char 
 	offset = 0;
 	for (;;){
 		int amt;
-		amt = recv(sock, &buf[offset], block_size,0);
+		amt = recv(sock, &buf[offset], block_size,0); 
 		if (amt == 0){
 			break;
 		} else if (amt == -1) {
@@ -558,8 +568,14 @@ short int GeoIP_update_database_general (char * user_id,char * license_key,char 
 	}
 	buf[offset] = 0;
 	offset = 0;
-	tmpstr = strstr(buf, "\r\n\r\n") + 4;
-	if (tmpstr[0] == '.' || strchr(tmpstr, '/') != NULL) {
+	tmpstr = strstr(buf, "\r\n\r\n");
+        if ( tmpstr == NULL ) {
+   		free(buf);
+		return GEOIP_INVALID_SERVER_RESPONSE;
+        }
+        /* skip searchstr  "\r\n\r\n" */
+        tmpstr += 4;
+	if (tmpstr[0] == '.' || strchr(tmpstr, '/') != NULL || strchr(tmpstr, '\\') != NULL) {
 		free(buf);
 		return GEOIP_INVALID_SERVER_RESPONSE;
 	}
@@ -609,7 +625,10 @@ short int GeoIP_update_database_general (char * user_id,char * license_key,char 
 			free(geoipfilename);
 			return GEOIP_CONNECTION_ERR;
 		}
-		request_uri = malloc(sizeof(char) * (strlen(license_key) + strlen(GeoIPHTTPRequestMD5)+1036));
+		request_uri = malloc(sizeof(char) * (strlen(GeoIPHTTPRequestClientIP) 
+                                                     + strlen(GeoIPProxyHTTP) 
+                                                     + strlen(GeoIPProxiedHost)
+                                                     + strlen(GeoIPUpdateHost) + 1 ));
 		if (request_uri == NULL) {
 			free(geoipfilename);
 			return GEOIP_OUT_OF_MEMORY_ERR;
@@ -631,7 +650,7 @@ short int GeoIP_update_database_general (char * user_id,char * license_key,char 
 
 		for (;;){
 			int amt;
-			amt = recv(sock, &buf[offset], block_size,0);
+			amt = recv(sock, &buf[offset], block_size,0); 
 			if (amt == 0) {
 				break;
 			} else if (amt == -1) {
@@ -669,8 +688,8 @@ short int GeoIP_update_database_general (char * user_id,char * license_key,char 
 		GeoIP_printf(f, "md5sum of ip address and license key is %s \n",hex_digest2);
 	}
 
-	/* send the request using the user id,product id,
-	 * md5 sum of the prev database and
+	/* send the request using the user id,product id, 
+	 * md5 sum of the prev database and 
 	 * the md5 sum of the license_key and ip address */
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		return GEOIP_SOCKET_OPEN_ERR;
@@ -750,7 +769,7 @@ short int GeoIP_update_database_general (char * user_id,char * license_key,char 
 	strcpy(file_path_gz,geoipfilename);
 	strcat(file_path_gz,".gz");
 	if (verbose == 1) {
-    GeoIP_printf(f, "%s%s", SavingGzip, file_path_gz );
+    GeoIP_printf(f, SavingGzip, file_path_gz );
 	}
 	comp_fh = fopen(file_path_gz, "wb");
 

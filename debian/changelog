@@ -1,3 +1,122 @@
+geoip (1.4.8+dfsg-3) unstable; urgency=low
+
+  * Sync 1.4.8+dfsg-2~bpo60+1 changelog.
+  * Bump Standards-Version to 3.9.3 (no changed needed).
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Sat, 25 Feb 2012 22:01:26 +0100
+
+geoip (1.4.8+dfsg-2~bpo60+1) squeeze-backports; urgency=low
+
+  * Rebuild for squeeze-backports.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Thu, 16 Feb 2012 11:30:48 +0100
+
+geoip (1.4.8+dfsg-2) unstable; urgency=low
+
+  * Apply patch from Sebastian Carneiro, to fix the broken libtool.
+    Closes: #638395
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Fri, 26 Aug 2011 21:09:59 +0200
+
+geoip (1.4.8+dfsg-1) unstable; urgency=low
+
+  * New upstream release.
+  * Overwrite no-symbols-control-file lintian warnings.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Sat, 25 Jun 2011 14:00:58 +0200
+
+geoip (1.4.7+dfsg-2) unstable; urgency=low
+
+  * Build with hardening-wrapper.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Sat, 30 Apr 2011 16:12:59 +0200
+
+geoip (1.4.7+dfsg-1) unstable; urgency=low
+
+  * New upstream release.
+  * Wrap build dependencies.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Sat, 16 Apr 2011 12:58:12 +0200
+
+geoip (1.4.7~beta14+dfsg-1) unstable; urgency=low
+
+  * New upstream beta release.
+  * Bump Standards-Version to 3.9.2 (no changes needed).
+  * Convert the deprecated AN country code to CW in the geoip-generator. This
+    fixes a FTBFS at the geoip-database package.
+  * Fix lintian warning description-synopsis-starts-with-article.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Tue, 12 Apr 2011 20:29:20 +0200
+
+geoip (1.4.7~beta13+dfsg-1) unstable; urgency=low
+
+  * New upstream beta release.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Fri, 01 Apr 2011 20:35:40 +0200
+
+geoip (1.4.7~beta12+dfsg-1) unstable; urgency=low
+
+  * New upstream beta release.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Tue, 15 Mar 2011 19:55:07 +0100
+
+geoip (1.4.7~beta11+dfsg-1) unstable; urgency=low
+
+  * New upstream beta release.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Thu, 10 Mar 2011 20:26:15 +0100
+
+geoip (1.4.7~beta10+dfsg-4) unstable; urgency=low
+
+  * Uploading to unstable.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Sun, 06 Feb 2011 16:30:26 +0100
+
+geoip (1.4.7~beta10+dfsg-3) experimental; urgency=low
+
+  * Drop geoip-database package, it will be split to an extra source package.
+    Closes: #610161
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Tue, 18 Jan 2011 21:38:37 +0100
+
+geoip (1.4.7~beta10+dfsg-2) experimental; urgency=low
+
+  * Install our database generator scripts to /usr/lib/geoip/ with the
+    geoip-bin package and set geoip-bin as a dependency for libgeoip-dev.
+    This change prepares the split of the library and database package.
+  * Remove database update script examples. They are superseded by the
+    geoip-database-contrib package.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Sat, 15 Jan 2011 19:21:55 +0100
+
+geoip (1.4.7~beta10+dfsg-1) experimental; urgency=low
+
+  * New upstream beta release.
+  * Update both databases to the 4.1.2011 version.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Wed, 12 Jan 2011 21:07:24 +0100
+
+geoip (1.4.7~beta9+dfsg-1) experimental; urgency=low
+
+  * New upstream beta release.
+  * Merge 1.4.7~beta6+dfsg-1~bpo50+1 changelog.
+  * Remove temporary directory at the end of the database update scripts.
+    Closes: #601965
+  * Bump Standards-Version to 3.9.1 (no changes needed).
+  * Update both databases to the 2.11.2010 version.
+  * Bump debhelper to version 7.
+  * Some little format fixes in debian/README.Debian-source.
+  * Update my copyright.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Mon, 08 Nov 2010 19:56:14 +0100
+
+geoip (1.4.7~beta6+dfsg-1~bpo50+1) lenny-backports; urgency=low
+
+  * Rebuild for lenny-backports.
+    - Revert the 3.0 (quilt) format.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Fri, 16 Jul 2010 20:40:41 +0200
+
 geoip (1.4.7~beta6+dfsg-1) unstable; urgency=low
 
   * New upstream beta release.

@@ -4,7 +4,8 @@ it has a non dfsg-free copyright statement:
   - data/GeoIP.dat
 
 I removed with the following sed line the non-free copyright statement:
-$ sed 's/ All Rights Reserved//' -i data/GeoIP.dat
+	$ sed 's/ All Rights Reserved//' -i data/GeoIP.dat
+
 
 I asked in an email the upstream author for permissions to change this
 non-free copyright statement, here is the full email conversation with
@@ -16,7 +17,7 @@ X-Account-Key: account2
 X-UIDL: 12248
 X-Mozilla-Status: 0003
 X-Mozilla-Status2: 00000000
-X-Mozilla-Keys:                                                                                 
+X-Mozilla-Keys:
 Received: from [66.111.4.27] (helo=out3.smtp.messagingengine.com)
 	by mx17.web.de with esmtp (WEB.DE 4.108 #208)
 	id 1J2K89-0008Tg-00
@@ -54,9 +55,6 @@ With
 Copyright (C) 2007 MaxMind LLC
 
 -TJ
-
-
-
 -------- Original Message --------
 Subject: GeoIP.dat
 Date: Thu, 06 Dec 2007 16:55:33 +0100
@@ -99,4 +97,4 @@ E-Mail: patrick.matthaei@web.de
 Homepage: http://www.Linux-Dev.org/
 </email>
 
- -- Patrick Matthäi <patrick.matthaei@web.de>  Wed, 19 Dec 2007 +0100
+ -- Patrick Matthäi <pmatthaei@debian.org>  Wed, 19 Dec 2007 +0100

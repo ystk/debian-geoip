@@ -1,6 +1,7 @@
 /* geoip-csv-to-dat - convert a country database from CSV to GeoIP binary format
  *
  * Copyright (c) 2009 Kalle Olavi Niemitalo.
+ * Copyright (c) 2011 Patrick Matthäi
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -499,6 +500,10 @@ namespace {
 			if (csv_fields.size() != CSV_FIELDS) {
 				error_at_line(EX_DATAERR, 0, csv_file_name, csv_line_number,
 					      "Wrong number of fields");
+			}
+
+			if (csv_fields[CSV_FIELD_COUNTRY_CODE] == "AN") {
+				csv_fields[CSV_FIELD_COUNTRY_CODE] = "CW";
 			}
 
 			const int countryid = GeoIP_id_by_code(csv_fields[CSV_FIELD_COUNTRY_CODE].c_str());
