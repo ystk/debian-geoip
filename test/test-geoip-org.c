@@ -25,7 +25,7 @@ static const char * _mk_NA( const char * p ){
  return p ? p : "N/A";
 }
 
-int
+int 
 main(int argc, char *argv[])
 {
   FILE           *f;

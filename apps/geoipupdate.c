@@ -168,7 +168,7 @@ int main (int argc, char *argv[]) {
 					the_product_id_stral[num_product_ids] = 20;                /* the alloc length of the string */
 					while ((a_ptr[0] != ' ') & (a_ptr[0] != '\0')) {
 						if (the_product_id_strl[num_product_ids] >= the_product_id_stral[num_product_ids]) {
-							/* if the length of the string is equal or more than
+							/* if the length of the string is equal or more than 
 							 * alloc length of the string then realloc the string and
 							 * increase the alloc length by 20 */
 							the_product_id_stral[num_product_ids] = the_product_id_stral[num_product_ids] + 20;
@@ -254,7 +254,7 @@ int main (int argc, char *argv[]) {
 			print_status(err, license_file);
 		}
 	} else {
-		/* Old format with just license key for MaxMind GeoIP Country database updates
+		/* Old format with just license key for MaxMind GeoIP Country database updates 
 		 * here for backwards compatibility */
 		err = GeoIP_update_database(the_license_key_str, verbose, &my_printf);
 		print_status(err, license_file);

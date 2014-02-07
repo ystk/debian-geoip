@@ -12,10 +12,10 @@ int numipstrings = 4;
 #if !defined(_WIN32)
 struct timeval timer_t1;
 struct timeval timer_t2;
-#else /* !defined(_WIN32) */
-FILETIME timer_t1; /* 100 ns */
-FILETIME timer_t2;
-#endif /* !defined(_WIN32) */
+#else /* !defined(_WIN32) */ 
+FILETIME timer_t1; /* 100 ns */ 
+FILETIME timer_t2; 
+#endif /* !defined(_WIN32) */ 
 
 #if !defined(_WIN32)
 void timerstart() {
@@ -35,17 +35,17 @@ double timerstop() {
   r = (((double) a1) + (((double) a2) / 1000000));
   return r;
 }
-#else /* !defined(_WIN32) */
-void timerstart() {
-  GetSystemTimeAsFileTime(&timer_t1);
-}
-double timerstop() {
-  __int64 delta; /* VC6 can't convert an unsigned int64 to to double */
-  GetSystemTimeAsFileTime(&timer_t2);
-  delta = FILETIME_TO_USEC(timer_t2) - FILETIME_TO_USEC(timer_t2);
-  return delta;
-}
-#endif /* !defined(_WIN32) */
+#else /* !defined(_WIN32) */ 
+void timerstart() { 
+  GetSystemTimeAsFileTime(&timer_t1); 
+} 
+double timerstop() { 
+  __int64 delta; /* VC6 can't convert an unsigned int64 to to double */ 
+  GetSystemTimeAsFileTime(&timer_t2); 
+  delta = FILETIME_TO_USEC(timer_t2) - FILETIME_TO_USEC(timer_t2); 
+  return delta; 
+} 
+#endif /* !defined(_WIN32) */ 
 
 void testgeoipcountry(int flags,const char *msg,int numlookups) {
   const char *str = NULL;
@@ -83,7 +83,7 @@ void testgeoipregion(int flags,const char *msg,int numlookups) {
   timerstart();
   for (i2 = 0;i2 < numlookups;i2++) {
     i3 = GeoIP_region_by_addr(i,ipstring[i4]);
-    GeoIPRegion_delete(i3);
+    GeoIPRegion_delete(i3); 
     i4 = (i4 + 1) % numipstrings;
   }
   t = timerstop();

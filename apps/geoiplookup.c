@@ -23,10 +23,10 @@
 #include "GeoIP_internal.h"
 
 #if defined(_WIN32)
-# ifndef uint32_t
-typedef unsigned int uint32_t;
-# endif
-#endif
+# ifndef uint32_t 
+typedef unsigned int uint32_t; 
+# endif 
+#endif 
 
 void geoiplookup(GeoIP* gi,char *hostname,int i);
 
@@ -49,7 +49,7 @@ int main (int argc, char *argv[]) {
 	if (argc < 2) {
 		usage();
 		exit(1);
-	}
+	} 
 	i = 1;
 	while (i < argc) {
 		if (strcmp(argv[i],"-v") == 0) {
@@ -83,7 +83,7 @@ int main (int argc, char *argv[]) {
 
 	if (custom_file != NULL) {
 		gi = GeoIP_open(custom_file, GEOIP_STANDARD);
-
+		
 		if (NULL == gi) {
 			printf("%s not available, skipping...\n", custom_file);
 		} else {
@@ -239,7 +239,7 @@ geoiplookup(GeoIP * gi, char *hostname, int i)
 	GeoIPRecord    *gir;
 	const char     *org;
 	uint32_t        ipnum;
-
+	
 	ipnum = _GeoIP_lookupaddress(hostname);
 	if (ipnum == 0) {
 		printf("%s: can't resolve hostname ( %s )\n", GeoIPDBDescription[i], hostname);
@@ -257,7 +257,7 @@ geoiplookup(GeoIP * gi, char *hostname, int i)
                                 _say_range_by_ip(gi, ipnum);
 			}
 		}
-		else if (GEOIP_LOCATIONA_EDITION == i || GEOIP_ACCURACYRADIUS_EDITION == i || GEOIP_ASNUM_EDITION == i) {
+		else if (GEOIP_LOCATIONA_EDITION == i || GEOIP_ACCURACYRADIUS_EDITION == i || GEOIP_ASNUM_EDITION == i || GEOIP_USERTYPE_EDITION == i || GEOIP_REGISTRAR_EDITION == i || GEOIP_NETSPEED_EDITION_REV1 == i ) {
 			asnum_name = GeoIP_name_by_ipnum(gi, ipnum);
 			if (asnum_name == NULL) {
 				printf("%s: IP Address not found\n", GeoIPDBDescription[i]);
@@ -281,7 +281,7 @@ geoiplookup(GeoIP * gi, char *hostname, int i)
 		}
 		else if (GEOIP_REGION_EDITION_REV0 == i || GEOIP_REGION_EDITION_REV1 == i) {
 			region = GeoIP_region_by_ipnum(gi, ipnum);
-			if (NULL == region) {
+			if (NULL == region || region->country_code[0] == '\0' ) {
 				printf("%s: IP Address not found\n", GeoIPDBDescription[i]);
 			}
 			else {
@@ -328,10 +328,10 @@ geoiplookup(GeoIP * gi, char *hostname, int i)
 
 				printf("%s: %s, %s, %s, %s, %f, %f, %d, %d, %s, %s, %s, %s\n", GeoIPDBDescription[i], gir->country_code, _mk_NA(gir->region), _mk_NA(gir->city), _mk_NA(gir->postal_code),
 				       gir->latitude, gir->longitude, gir->metro_code, gir->area_code,
-                                       country_str, region_str, city_str, postal_str
+                                       country_str, region_str, city_str, postal_str                       
                                      );
                                 _say_range_by_ip(gi, ipnum);
-                                GeoIPRecord_delete(gir);
+                                GeoIPRecord_delete(gir);                                
 			}
 		}
 		else if (GEOIP_CITYCONFIDENCEDIST_EDITION == i) {
@@ -349,13 +349,13 @@ geoiplookup(GeoIP * gi, char *hostname, int i)
                                   sprintf(accuracy_radius_str, "%d", gir->accuracy_radius );
 } else {
                                 strcpy(accuracy_radius_str,"N/A");}
-
+  
 				printf("%s: %s, %s, %s, %s, %f, %f, %d, %d, %s, %s, %s, %s, %s\n", GeoIPDBDescription[i], gir->country_code, _mk_NA(gir->region), _mk_NA(gir->city), _mk_NA(gir->postal_code),
 				       gir->latitude, gir->longitude, gir->metro_code, gir->area_code,
                                        country_str, region_str, city_str, postal_str, accuracy_radius_str
                                      );
                                 _say_range_by_ip(gi, ipnum);
-                                GeoIPRecord_delete(gir);
+                                GeoIPRecord_delete(gir);                                
 			}
 		}
 		else if (GEOIP_ORG_EDITION == i || GEOIP_ISP_EDITION == i) {
@@ -387,11 +387,11 @@ geoiplookup(GeoIP * gi, char *hostname, int i)
 		else {
 
 		/*
-		 * Silent ignore IPv6 databases. Otherwise we get annoying
+		 * Silent ignore IPv6 databases. Otherwise we get annoying 
 		 * messages whenever we have a mixed environment IPv4 and
 		 *  IPv6
 		 */
-
+		
 		/*
 		 * printf("Can not handle database type -- try geoiplookup6\n");
 		 */
