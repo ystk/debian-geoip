@@ -1,3 +1,29 @@
+geoip (1.6.2-4) unstable; urgency=high
+
+  * Fix for generating v6 and city database.
+    Closes: #775851
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Tue, 27 Jan 2015 12:20:30 +0100
+
+geoip (1.6.2-3) unstable; urgency=low
+
+  * geoip-generator: Add support for skipping locations if the location ID is
+    not correctly ordered in the upstream CSV.
+    Closes: #774611
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Mon, 05 Jan 2015 10:04:40 +0100
+
+geoip (1.6.2-2) unstable; urgency=low
+
+  * Add patch for geoip-csv-to-dat to add support for building GeoIP city DB.
+    Many thanks to Andrew Moise for contributing!
+  * Add and install geoip-generator-asn, which is able to build the ASN DB. It
+    is a modified version from the original geoip-generator. Much thanks for
+    contributing also to Aaron Gibson!
+  * Bump Standards-Version to 3.9.6 (no changes required).
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Mon, 27 Oct 2014 19:15:25 +0100
+
 geoip (1.6.2-1) unstable; urgency=medium
 
   * New upstream release.
